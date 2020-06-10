@@ -3,11 +3,9 @@
 import sqlite3
 import re
 
-# Paths to db`s
-VACANCY = '.\Вакансии.db'
-COMPANIES = '.\Компании.db'
-COMMON = '.\Общее.db'
-UNEMPLOYED = '.\Соискатель.db'
+# Paths to db
+VACANCY = 'Base.db'
+
 
 
 def regexp(expr, item):
@@ -19,8 +17,7 @@ def establish_connection(path_to_db):
     connection = None
     if (path_to_db):
         try:
-            connection = sqlite3.connect(
-                'file:' + path_to_db + '?mode=rw', uri=True)
+            connection = sqlite3.connect('file:' + path_to_db + '?mode=rw')
             # connection = sqlite3.connect(path_to_db)
         except:
             return None
@@ -35,7 +32,7 @@ def show_all_tables(connection):
 
 
 def show_exact_table(connection, table_name):
-    return connection['cursor'].execute(f'''SELECT * FROM {table_name} ''').fetchall()
+    return connection['cursor'].execute(f'''SELECT * FROM {table_name};''').fetchall()
 
 
 def add_data(connection, table_name, data):
@@ -51,10 +48,15 @@ def delete_data_by_cond(connection, table_name, cond):
     connection['cursor'].execute(f'''DELETE FROM {table_name} WHERE {cond}''')
     connection['conn'].commit()
 
-# print(establish_connection(VACANCY))
+
+
 # print(*show_all_tables(establish_connection(VACANCY)), sep='\n\n')
 # add_data(establish_connection(UNEMPLOYED), '[Информация о соискателе]', (4, 'Царулкова', 'Анастасия', 'Витальевна', '06.07.2000', 'asa@asa.ru', '+80987654309', 'Целеустремленная, креативная', 2))
-print(*show_exact_table(establish_connection(UNEMPLOYED), '[Информация о соискателе]'), sep='\n\n')
-cond = '''[ID соискателя] = 3'''
-delete_data_by_cond(establish_connection(UNEMPLOYED), '[Информация о соискателе]', cond)
-print(*show_exact_table(establish_connection(UNEMPLOYED), '[Информация о соискателе]'), sep='\n\n')
+# print(*show_exact_table(establish_connection(UNEMPLOYED), '[Информация о соискателе]'), sep='\n\n')
+# cond = '''[ID соискателя] = 3'''
+# delete_data_by_cond(establish_connection(UNEMPLOYED), '[Информация о соискателе]', cond)
+# print(*show_exact_table(establish_connection(UNEMPLOYED), '[Информация о соискателе]'), sep='\n\n')
+# print(establish_connection(COMMON))
+
+# table = '''Пользователи'''
+# print(show_exact_table(establish_connection(UNEMPLOYED), table))
