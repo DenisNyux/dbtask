@@ -1,16 +1,21 @@
 import sqlite3
 
+BASE_PATH = './Base.db'
+   
+class SearchApp:
 
-class Search:
+    __exact_user = None
 
-    # Paths to db`s
-    VACANCY = '.\Вакансии.db'
-    COMPANIES = '.\Компании.db'
-    COMMON = '.\Общее.db'
-    UNEMPLOYED = '.\Соискатель.db'
-    
-    
-    def establish_connection(self, path_to_db):
+
+    def __init__(self):
+        while self.__exact_user == None:
+            print('Введите свой логин и пароль для доступа')
+            log = input('Логин: ')
+            pas = input('Пароль: ')
+            self.log_in(log, pas)
+        
+
+    def __establish_connection(self, path_to_db):
         connection = None
         if (path_to_db):
             try:
@@ -26,8 +31,38 @@ class Search:
 
 
     def log_in(self, log, pas):
-        print('Введите свой логин и пароль для доступа')
-        log = input()
-        pas = input()
-        
-        pass
+        query = "SELECT * FROM [Пользователи] WHERE [Логин] = " + "'" + log + "'" "AND [Пароль] = "+ "'" + pas + "'"
+        user = self.__establish_connection(BASE_PATH)['cursor'].execute(query).fetchall()
+        if user:
+            print('Авторизация прошла успешно')
+            self.__exact_user = user[0]
+        else: 
+            print('Такого пользователя нет. Попробуйте еще раз.')
+
+    
+    
+    
+
+# print('Введите свой логин и пароль для доступа')
+# log = input('Логин: ')
+# pas = input('Пароль: ')
+app = SearchApp()    
+# print(app.log_in(log, pas))
+
+
+
+
+
+# conn = establish_connection(BASE_PATH)
+# cur = conn['cursor']
+# a = cur.execute('SELECT * FROM [Пользователи]').fetchall()
+# print(a)
+
+
+# def regexp(expr, item):
+#     reg = re.compile(expr)
+#     return reg.search(item) is not None
+
+# def add_data(connection, table_name, data):
+#     # try:
+#     connection['conn'].create_function("REGEXP", 2, regexp)
